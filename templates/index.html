@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业文档知识库问答系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-book"></i>
+                企业文档知识库
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/admin">
+                    <i class="bi bi-gear"></i> 管理后台
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <div class="container-fluid h-100 py-3">
+        <div class="row h-100">
+            <div class="col-12 h-100">
+                <!-- 对话卡片 - 占满整个视口 -->
+                <div class="card h-100 shadow-lg">
+                    <!-- 卡片头部 -->
+                    <div class="card-header bg-primary text-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0">
+                                    <i class="bi bi-robot"></i>
+                                    企业文档智能助手
+                                </h5>
+                                <small class="text-white-50">支持多轮对话，记住上下文</small>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-light me-2" onclick="loadConversationHistory()">
+                                    <i class="bi bi-arrow-clockwise"></i> 刷新
+                                </button>
+                                <button class="btn btn-sm btn-outline-warning" onclick="clearConversation()">
+                                    <i class="bi bi-chat-square-dots"></i> 新对话
+                                </button>
+                                <a href="/admin" class="btn btn-sm btn-light">
+                                    <i class="bi bi-gear"></i> 管理
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 对话内容区域 -->
+                    <div class="card-body p-0 d-flex flex-column h-100">
+                        <!-- 对话历史显示 -->
+                        <div id="conversationArea" class="flex-grow-1 overflow-auto p-3" style="min-height: 60vh; max-height: 65vh;">
+                            <div id="conversationHistory" class="conversation-history">
+                                <!-- 初始欢迎消息 -->
+                                <div class="d-flex justify-content-start mb-3">
+                                    <div class="msg-assistant">
+                                        <div class="msg-content">
+                                            <strong><i class="bi bi-robot"></i> 助手：</strong>
+                                            您好！我是企业文档智能助手，可以帮您查询企业制度、流程、SAP系统使用等问题。请问有什么可以帮您的吗？
+                                        </div>
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock"></i> 就现在
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 输入区域 -->
+                        <div class="border-top p-3 bg-light">
+                            <!-- 临时提示信息 -->
+                            <div id="tempMessage" class="alert alert-info alert-sm mb-2" style="display: none;">
+                                <i class="bi bi-info-circle"></i>
+                                <span id="tempMessageText"></span>
+                            </div>
+
+                            <!-- 错误提示 -->
+                            <div id="errorMessage" class="alert alert-danger alert-sm mb-2" style="display: none;">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <span id="errorText"></span>
+                            </div>
+
+                            <!-- 查询改写提示 -->
+                            <div id="queryRewrite" class="alert alert-info alert-sm mb-2" style="display: none;">
+                                <i class="bi bi-magic"></i>
+                                <strong>查询优化：</strong>
+                                <span id="rewriteText"></span>
+                            </div>
+
+                            <!-- 输入框 -->
+                            <div class="input-group">
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="questionInput" 
+                                       placeholder="请输入您的问题，例如：SAP有哪些模块？"
+                                       onkeypress="if(event.key === 'Enter') { sendQuestion(); }"
+                                       autocomplete="off">
+                                <button class="btn btn-primary" type="button" onclick="sendQuestion()" id="sendButton">
+                                    <i class="bi bi-send"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted">
+                                <i class="bi bi-lightbulb"></i> 
+                                支持追问，系统会记住对话上下文 | Enter键快速发送
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
